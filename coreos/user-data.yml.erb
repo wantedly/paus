@@ -166,7 +166,7 @@ coreos:
         ExecStop=/usr/bin/docker stop registry
 
         [Install]
-        WantedBy=multi-user.targe
+        WantedBy=multi-user.target
 write_files:
   - path: /etc/ssh/sshd_config
     permissions: "0600"
