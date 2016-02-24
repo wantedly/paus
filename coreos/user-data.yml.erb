@@ -50,6 +50,7 @@ coreos:
         ExecStartPost=/usr/bin/chmod +x /opt/bin/docker-compose
         RemainAfterExit=yes
         Type=oneshot
+<% if is_manager %>
     - name: vulcand.service
       command: start
       enable: true
@@ -147,6 +148,25 @@ coreos:
 
         [Install]
         WantedBy=multi-user.target
+<% else %>
+    - name: swarm-agent.service
+      command: start
+      content: |
+        [Unit]
+        Description=swarm-agent Container
+        After=docker.service
+        Requires=docker.service
+
+        [Service]
+        TimeoutStartSec=0
+        Restart=always
+        ExecStartPre=-/usr/bin/docker stop swarm-agent
+        ExecStartPre=-/usr/bin/docker rm swarm-agent
+        ExecStartPre=-/usr/bin/docker pull swarm
+        ExecStart=/usr/bin/docker run --name=swarm-agent swarm join --addr=$private_ipv4:2375 etcd://$private_ipv4:2379
+        [Install]
+        WantedBy=multi-user.target
+<% end %>
 write_files:
   - path: /etc/ssh/sshd_config
     permissions: "0600"
@@ -184,6 +204,7 @@ write_files:
           }
         }
       }
+<% if is_manager %>
   - path: /home/core/docker-compose.yml
     content: |
       gitreceive-upload-key:
@@ -191,3 +212,4 @@ write_files:
         volumes_from:
           - paus-gitreceive
         entrypoint: /usr/local/bin/upload-key
+<% end %>
