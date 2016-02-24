@@ -62,6 +62,7 @@ coreos:
 
         [Service]
         TimeoutStartSec=0
+        Restart=always
         User=core
         ExecStartPre=-/usr/bin/docker kill vulcand
         ExecStartPre=-/usr/bin/docker rm vulcand
@@ -82,6 +83,8 @@ coreos:
 
         [Service]
         TimeoutStartSec=0
+        Restart=always
+        User=core
         ExecStartPre=-/usr/bin/docker kill paus-frontend
         ExecStartPre=-/usr/bin/docker rm paus-frontend
         ExecStartPre=/usr/bin/docker pull quay.io/wantedly/paus-frontend:latest
@@ -101,6 +104,8 @@ coreos:
 
         [Service]
         TimeoutStartSec=0
+        Restart=always
+        User=core
         ExecStartPre=-/usr/bin/docker kill paus-gitreceive
         ExecStartPre=-/usr/bin/docker rm paus-gitreceive
         ExecStartPre=/usr/bin/docker pull quay.io/wantedly/paus-gitreceive:latest
@@ -120,6 +125,7 @@ coreos:
         [Service]
         TimeoutStartSec=0
         Restart=always
+        User=core
         ExecStartPre=-/usr/bin/docker stop swarm-manager
         ExecStartPre=-/usr/bin/docker rm swarm-manager
         ExecStartPre=-/usr/bin/docker pull swarm
@@ -139,6 +145,7 @@ coreos:
         [Service]
         TimeoutStartSec=0
         Restart=always
+        User=core
         ExecStartPre=-/usr/bin/docker stop swarm-agent
         ExecStartPre=-/usr/bin/docker rm swarm-agent
         ExecStartPre=-/usr/bin/docker pull swarm
