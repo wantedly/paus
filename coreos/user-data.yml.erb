@@ -130,6 +130,7 @@ coreos:
         ExecStartPre=-/usr/bin/docker rm swarm-manager
         ExecStartPre=-/usr/bin/docker pull swarm
         ExecStart=/usr/bin/docker run -p 2377:2375 --name=swarm-manager swarm manage --addr=$private_ipv4:2375 etcd://$private_ipv4:2379/swarm
+        ExecStop=/usr/bin/docker stop swarm-manager
 
         [Install]
         WantedBy=multi-user.target
